@@ -97,9 +97,16 @@ public class OwnerController {
 			return new ResponseEntity<Map<String, Object>>(response, status);
 		}
 
-		response.put("mensaje", "Restaurante creado correctamente");
-		response.put("owner", owner);
-		response.put("exito", true);
+		if (owner != null) {
+			response.put("mensaje", "OK");
+			response.put("owner", owner);
+			response.put("exito", true);
+		} else {
+			response.put("mensaje", "No existen registros");
+			response.put("owner", owner);
+			response.put("exito", false);
+		}
+
 		return new ResponseEntity<Map<String, Object>>(response, status);
 	}
 }
