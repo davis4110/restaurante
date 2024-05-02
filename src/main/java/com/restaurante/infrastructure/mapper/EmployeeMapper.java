@@ -5,29 +5,29 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-import com.restaurante.domain.Restaurant;
-import com.restaurante.infrastructure.entity.RestaurantEntity;
+import com.restaurante.domain.Employee;
+import com.restaurante.infrastructure.entity.EmployeeEntity;
 
 @Mapper(componentModel = "spring")
-public interface RestaurantMapper {
+public interface EmployeeMapper {
 
     @Mappings(
             {
                     @Mapping(source = "id", target = "id"),
                     @Mapping(source = "identification", target = "identification"),
-                    @Mapping(source = "name", target = "name"),
+                    @Mapping(source = "firstName", target = "firstName"),
+                    @Mapping(source = "lastName", target = "lastName"),
                     @Mapping(source = "email", target = "email"),
                     @Mapping(source = "address", target = "address"),
                     @Mapping(source = "cellphone", target = "cellphone"),
-                    @Mapping(source = "dateCreated", target = "dateCreated"),
-                    @Mapping(source = "lstEmployeesEntity", target = "lstEmployees")
+                    @Mapping(source = "dateCreated", target = "dateCreated")
             }
     )
 
-    Restaurant toRestaurant(RestaurantEntity restaurantEntity);
+    Employee toEmployee(EmployeeEntity employeeEntity);
 
-    Iterable<Restaurant> toRestaurants(Iterable<RestaurantEntity> restaurantEntities);
+    Iterable<Employee> toEmployees(Iterable<EmployeeEntity> employeeEntities);
 
     @InheritInverseConfiguration
-    RestaurantEntity toRestaurantEntity(Restaurant restaurant);
+    EmployeeEntity toEmployeeEntity(Employee employee);
 }

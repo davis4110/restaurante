@@ -3,8 +3,10 @@ package com.restaurante.infrastructure.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.restaurante.application.repository.EmployeeRepository;
 import com.restaurante.application.repository.OwnerRepository;
 import com.restaurante.application.repository.RestaurantRepository;
+import com.restaurante.application.service.EmployeeService;
 import com.restaurante.application.service.OwnerService;
 import com.restaurante.application.service.RestaurantService;
 
@@ -21,5 +23,10 @@ public class BeanConfiguration {
 		return new OwnerService(ownerRepository);
 	}
 
-	
+	@Bean
+	public EmployeeService employeeService(EmployeeRepository employeeRepository) {
+		return new EmployeeService(employeeRepository);
+	}
+
+
 }

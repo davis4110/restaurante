@@ -2,10 +2,8 @@ package com.restaurante.infrastructure.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import com.restaurante.domain.Employee;
-import com.restaurante.domain.Restaurant;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,15 +12,18 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class RestaurantDto implements Serializable {
+public class EmployeeDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@NotBlank(message = "Identification es requerido")
 	private String identification;
 
-	@NotBlank(message = "Nombre es requerido")
-	private String name;
+	@NotBlank(message = "Nombres es requerido")
+	private String firstName;
+
+	@NotBlank(message = "Apellidos es requerido")
+	private String lastName;
 
 	@Email(message = "Debe ingresar un email valido")
 	private String email;
@@ -33,11 +34,12 @@ public class RestaurantDto implements Serializable {
 	@NotBlank(message = "Celular es requerido")
 	private String cellphone;
 
-	private List<Employee> lstEmployees;
+	@NotBlank(message = "El ID del restaurante es requerido")
+	private String idRestaurant;
 
-	public Restaurant restaurantDtoToRestaurant() {
-		return new Restaurant(null, this.getIdentification(), this.getName(), this.getEmail(), this.getAddress(),
-				this.getCellphone(), LocalDateTime.now(), this.getLstEmployees());
+	public Employee employeeDtoToEmployee() {
+		return new Employee(null, this.getIdentification(), this.getFirstName(), this.getLastName(), this.getEmail(),
+				this.getAddress(), this.getCellphone(), LocalDateTime.now());
 	}
 
 }
