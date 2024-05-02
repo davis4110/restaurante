@@ -19,20 +19,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OwnerEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    
-    @Column(unique = true)
-    private String identification;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String address;
-    private String cellphone;
-    private LocalDateTime dateCreated;
-    
-    @OneToMany
-    private List<RestaurantEntity> restaurantEntity;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	@Column(unique = true)
+	private String identification;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String address;
+	private String cellphone;
+	private LocalDateTime dateCreated;
+
+	@OneToMany
+	private List<RestaurantEntity> restaurantEntity;
 
 }
