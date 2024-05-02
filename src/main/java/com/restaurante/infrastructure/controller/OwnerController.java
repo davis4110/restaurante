@@ -14,26 +14,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.restaurante.application.service.RegistrationService;
-import com.restaurante.infrastructure.dto.RestaurantDto;
+import com.restaurante.application.service.OwnerService;
+import com.restaurante.application.service.RestaurantService;
+import com.restaurante.domain.Restaurant;
+import com.restaurante.infrastructure.dto.OwnerDto;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/restaurante")
+@RequestMapping("/owner")
 @Slf4j
-public class RestaurantController {
+public class OwnerController {
 
-	private final RegistrationService registrationService;
+	private final OwnerService ownerService;
+	
+	private final RestaurantService restaurantService;
 
-	public RestaurantController(RegistrationService registrationService) {
-		this.registrationService = registrationService;
+	public OwnerController(OwnerService ownerService, RestaurantService restaurantService) {
+		this.ownerService = ownerService;
+		this.restaurantService = restaurantService;
 	}
 
 	@PostMapping
-	public ResponseEntity<?> registerRestaurant(@Valid @RequestBody RestaurantDto restaurantDto,
-			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+	public ResponseEntity<?> registerOwner(@Valid @RequestBody OwnerDto ownerDto, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
 		Map<String, Object> response = new HashMap<>();
 		response.put("exito", false);
 		HttpStatus status = HttpStatus.CREATED;
@@ -49,7 +54,16 @@ public class RestaurantController {
 			return new ResponseEntity<Map<String, Object>>(response, status);
 		}
 		try {
-			registrationService.register(restaurantDto.restaurantDtoToRestaurant());
+			Restaurant restaurant = restaurantService.findById(Integer.parseInt(ownerDto.getIdRestaurant()));
+			if(restaurant != null) {
+				ownerDto.setRestaurant(restaurant);				
+				ownerService.createOwner(ownerDto.ownerDtoToOwner());
+			} else {
+				status = HttpStatus.BAD_REQUEST;
+				response.put("mensaje", "El ID del restaurante no Existe!");
+				response.put("exito", false);
+				return new ResponseEntity<Map<String, Object>>(response, status);
+			}
 		} catch (Exception e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			response.put("mensaje", "Error al realizar la consulta en la base de datos");
@@ -57,7 +71,7 @@ public class RestaurantController {
 			return new ResponseEntity<Map<String, Object>>(response, status);
 		}
 
-		response.put("mensaje", "Restaurante creado correctamente");
+		response.put("mensaje", "Owner creado correctamente");
 		response.put("exito", true);
 		return new ResponseEntity<Map<String, Object>>(response, status);
 	}

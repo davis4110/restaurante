@@ -23,10 +23,10 @@ public interface RestaurantMapper {
             }
     )
 
-    Restaurant toUser(RestaurantEntity userEntity);
+    Restaurant toRestaurant(RestaurantEntity restaurantEntity);
 
-    Iterable<Restaurant> toUsers(Iterable<RestaurantEntity> userEntities);
+    Iterable<Restaurant> toRestaurants(Iterable<RestaurantEntity> restaurantEntities);
 
     @InheritInverseConfiguration
-    RestaurantEntity toUserEntity(Restaurant user);
+    RestaurantEntity toRestaurantEntity(Restaurant restaurant);
 }
