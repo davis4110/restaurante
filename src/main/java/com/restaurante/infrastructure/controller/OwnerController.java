@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +18,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.restaurante.application.service.OwnerService;
 import com.restaurante.application.service.RestaurantService;
+import com.restaurante.domain.Owner;
 import com.restaurante.domain.Restaurant;
 import com.restaurante.infrastructure.dto.OwnerDto;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OwnerController {
 
 	private final OwnerService ownerService;
-	
+
 	private final RestaurantService restaurantService;
 
 	public OwnerController(OwnerService ownerService, RestaurantService restaurantService) {
@@ -54,10 +58,12 @@ public class OwnerController {
 			return new ResponseEntity<Map<String, Object>>(response, status);
 		}
 		try {
-			Restaurant restaurant = restaurantService.findById(Integer.parseInt(ownerDto.getIdRestaurant()));
-			if(restaurant != null) {
-				ownerDto.setRestaurant(restaurant);				
-				ownerService.createOwner(ownerDto.ownerDtoToOwner());
+			Restaurant restaurant = restaurantService.buscarById(Integer.parseInt(ownerDto.getIdRestaurant()));
+			if (restaurant != null) {
+				List<Restaurant> lstRestaurant = new ArrayList<>();
+				lstRestaurant.add(restaurant);
+				ownerDto.setLstRestaurant(lstRestaurant);
+				ownerService.crearOwner(ownerDto.ownerDtoToOwner());
 			} else {
 				status = HttpStatus.BAD_REQUEST;
 				response.put("mensaje", "El ID del restaurante no Existe!");
@@ -72,6 +78,27 @@ public class OwnerController {
 		}
 
 		response.put("mensaje", "Owner creado correctamente");
+		response.put("exito", true);
+		return new ResponseEntity<Map<String, Object>>(response, status);
+	}
+
+	@GetMapping(value = "/consultar/{id}")
+	public ResponseEntity<?> findAll(@PathVariable Integer id, HttpSession httpSession) {
+		Map<String, Object> response = new HashMap<>();
+		response.put("exito", false);
+		HttpStatus status = HttpStatus.OK;
+		Owner owner;
+		try {
+			owner = ownerService.buscarById(id);
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			response.put("mensaje", "Error al realizar la consulta en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, status);
+		}
+
+		response.put("mensaje", "Restaurante creado correctamente");
+		response.put("owner", owner);
 		response.put("exito", true);
 		return new ResponseEntity<Map<String, Object>>(response, status);
 	}

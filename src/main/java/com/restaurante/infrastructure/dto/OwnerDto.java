@@ -2,6 +2,7 @@ package com.restaurante.infrastructure.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.restaurante.domain.Owner;
 import com.restaurante.domain.Restaurant;
@@ -34,15 +35,15 @@ public class OwnerDto implements Serializable {
 
 	@NotBlank(message = "Celular es requerido")
 	private String cellphone;
-	
+
 	@NotBlank(message = "El ID del restaurante es requerido")
 	private String idRestaurant;
-	
-	private Restaurant restaurant;
+
+	private List<Restaurant> lstRestaurant;
 
 	public Owner ownerDtoToOwner() {
 		return new Owner(null, this.getIdentification(), this.getFirstName(), this.getLastName(), this.getEmail(),
-				this.getAddress(), this.getCellphone(), LocalDateTime.now(), this.getRestaurant());
+				this.getAddress(), this.getCellphone(), LocalDateTime.now(), this.getLstRestaurant());
 	}
 
 }

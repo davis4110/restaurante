@@ -1,6 +1,7 @@
 package com.restaurante.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,6 @@ public class Owner {
 	private String cellphone;
 	private LocalDateTime dateCreated;
 
-	private Restaurant restaurant;
+	private List<Restaurant> restaurant;
 
 }

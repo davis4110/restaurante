@@ -22,18 +22,18 @@ public class OwnerRepositoryImpl implements OwnerRepository {
 	}
 
 	@Override
-	public Owner createOwner(Owner owner) {
+	public Owner crearOwner(Owner owner) {
 		return ownerMapper.toOwner(ownerCrudRepository.save(ownerMapper.toOwnerEntity(owner)));
 	}
 
 	@Override
-	public Owner findByEmail(String email) {
+	public Owner buscarByEmail(String email) {
 		Optional<OwnerEntity> opOwner = ownerCrudRepository.findByEmail(email);
 		return ownerMapper.toOwner((opOwner.isPresent()) ? opOwner.get() : null);
 	}
 
 	@Override
-	public Owner findById(Integer id) {
+	public Owner buscarById(Integer id) {
 		Optional<OwnerEntity> opOwner = ownerCrudRepository.findById(id);
 		return ownerMapper.toOwner((opOwner.isPresent()) ? opOwner.get() : null);
 	}

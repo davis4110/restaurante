@@ -1,12 +1,13 @@
 package com.restaurante.infrastructure.adapter;
 
-import com.restaurante.infrastructure.entity.RestaurantEntity;
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.Optional;
+import com.restaurante.infrastructure.entity.RestaurantEntity;
 
 public interface RestaurantCrudRepository extends CrudRepository<RestaurantEntity, Integer> {
 
-    Optional<RestaurantEntity> findByEmail(String email);
+	Optional<RestaurantEntity> findByEmail(String email);
 
 }

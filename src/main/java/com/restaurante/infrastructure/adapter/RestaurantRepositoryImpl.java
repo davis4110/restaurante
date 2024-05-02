@@ -23,20 +23,20 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 	}
 
 	@Override
-	public Restaurant createRestaurant(Restaurant restaurant) {
+	public Restaurant crearRestaurant(Restaurant restaurant) {
 		return restaurantMapper
 				.toRestaurant(restaurantCrudRepository.save(restaurantMapper.toRestaurantEntity(restaurant)));
 	}
 
 	@Override
-	public Restaurant findByEmail(String email) {
+	public Restaurant buscarByCorreo(String email) {
 		Optional<RestaurantEntity> opRestaurant = restaurantCrudRepository.findByEmail(email);
 		return restaurantMapper.toRestaurant((opRestaurant.isPresent()) ? opRestaurant.get() : null);
 
 	}
 
 	@Override
-	public Restaurant findById(Integer id) {
+	public Restaurant buscarById(Integer id) {
 		Optional<RestaurantEntity> opRestaurant = restaurantCrudRepository.findById(id);
 		return restaurantMapper.toRestaurant((opRestaurant.isPresent()) ? opRestaurant.get() : null);
 	}

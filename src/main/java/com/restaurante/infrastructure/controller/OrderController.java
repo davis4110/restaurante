@@ -42,7 +42,7 @@ public class OrderController {
     @GetMapping("/sumary-order")
     public String showSumaryOrder(Model model, HttpSession httpSession){
         log.info("iduser desde la variable de sesion: {}",httpSession.getAttribute("iduser").toString());
-        Restaurant user = userService.findById(Integer.parseInt(httpSession.getAttribute("iduser").toString()));
+        Restaurant user = userService.buscarById(Integer.parseInt(httpSession.getAttribute("iduser").toString()));
         model.addAttribute("cart", cartService.getItemCarts());
         model.addAttribute("total", cartService.getTotalCart());
         model.addAttribute("user", user);
@@ -55,7 +55,7 @@ public class OrderController {
         log.info("create order..");
         log.info("iduser desde la variable de sesion: {}",httpSession.getAttribute("iduser").toString());
         //Obtener un usuario temporal
-        Restaurant user = userService.findById(Integer.parseInt(httpSession.getAttribute("iduser").toString()));
+        Restaurant user = userService.buscarById(Integer.parseInt(httpSession.getAttribute("iduser").toString()));
 
         //order
         Order order = new Order();

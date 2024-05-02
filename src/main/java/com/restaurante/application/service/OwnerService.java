@@ -11,15 +11,15 @@ public class OwnerService {
 		this.ownerRepository = ownerRepository;
 	}
 
-	public Owner createOwner(Owner owner) {
-		return ownerRepository.createOwner(owner);
+	public Owner crearOwner(Owner owner) {
+		return ownerRepository.crearOwner(owner);
 	}
 
-	public Owner findByEmail(String email) {
-		return ownerRepository.findByEmail(email);
+	public Owner buscarByEmail(String email) {
+		return ownerRepository.buscarByEmail(email);
 	}
 
-	public Owner findById(Integer id) {
-		return ownerRepository.findById(id);
+	public Owner buscarById(Integer id) {
+		return ownerRepository.buscarById(id);
 	}
 }

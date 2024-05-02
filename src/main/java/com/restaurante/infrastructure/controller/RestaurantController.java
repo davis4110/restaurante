@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.restaurante.application.service.RegistrationService;
+import com.restaurante.application.service.RestaurantService;
 import com.restaurante.infrastructure.dto.RestaurantDto;
 
 import jakarta.validation.Valid;
@@ -25,10 +25,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RestaurantController {
 
-	private final RegistrationService registrationService;
+	private final RestaurantService restaurantService;
 
-	public RestaurantController(RegistrationService registrationService) {
-		this.registrationService = registrationService;
+	public RestaurantController(RestaurantService restaurantService) {
+		this.restaurantService = restaurantService;
 	}
 
 	@PostMapping
@@ -49,7 +49,7 @@ public class RestaurantController {
 			return new ResponseEntity<Map<String, Object>>(response, status);
 		}
 		try {
-			registrationService.register(restaurantDto.restaurantDtoToRestaurant());
+			restaurantService.crearRestaurant(restaurantDto.restaurantDtoToRestaurant());
 		} catch (Exception e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			response.put("mensaje", "Error al realizar la consulta en la base de datos");
@@ -61,4 +61,5 @@ public class RestaurantController {
 		response.put("exito", true);
 		return new ResponseEntity<Map<String, Object>>(response, status);
 	}
+
 }
