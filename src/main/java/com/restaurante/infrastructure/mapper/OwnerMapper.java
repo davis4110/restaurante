@@ -21,7 +21,7 @@ public interface OwnerMapper {
                     @Mapping(source = "address", target = "address"),
                     @Mapping(source = "cellphone", target = "cellphone"),
                     @Mapping(source = "dateCreated", target = "dateCreated"),
-                    @Mapping(source = "restaurantEntity", target = "restaurant")
+                    @Mapping(source = "restaurant", target = "restaurant")
             }
     )
 

@@ -20,7 +20,7 @@ public interface RestaurantMapper {
                     @Mapping(source = "address", target = "address"),
                     @Mapping(source = "cellphone", target = "cellphone"),
                     @Mapping(source = "dateCreated", target = "dateCreated"),
-                    @Mapping(source = "lstEmployeesEntity", target = "lstEmployees")
+                    @Mapping(source = "employee", target = "lstEmployees")
             }
     )
 

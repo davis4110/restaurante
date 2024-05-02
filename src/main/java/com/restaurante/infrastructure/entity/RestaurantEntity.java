@@ -32,6 +32,6 @@ public class RestaurantEntity {
 	private LocalDateTime dateCreated;
 
 	@OneToMany
-	private List<EmployeeEntity> lstEmployeesEntity;
+	private List<EmployeeEntity> employee;
 
 }

@@ -33,6 +33,6 @@ public class OwnerEntity {
 	private LocalDateTime dateCreated;
 
 	@OneToMany
-	private List<RestaurantEntity> restaurantEntity;
+	private List<RestaurantEntity> restaurant;
 
 }
