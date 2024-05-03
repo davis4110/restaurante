@@ -5,9 +5,11 @@ import org.springframework.context.annotation.Configuration;
 
 import com.restaurante.application.repository.EmployeeRepository;
 import com.restaurante.application.repository.OwnerRepository;
+import com.restaurante.application.repository.ProductRepository;
 import com.restaurante.application.repository.RestaurantRepository;
 import com.restaurante.application.service.EmployeeService;
 import com.restaurante.application.service.OwnerService;
+import com.restaurante.application.service.ProductService;
 import com.restaurante.application.service.RestaurantService;
 
 @Configuration
@@ -28,5 +30,8 @@ public class BeanConfiguration {
 		return new EmployeeService(employeeRepository);
 	}
 
-
+	@Bean
+	public ProductService productService(ProductRepository productRepository) {
+		return new ProductService(productRepository);
+	}
 }

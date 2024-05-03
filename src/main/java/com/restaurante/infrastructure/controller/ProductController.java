@@ -10,39 +10,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.restaurante.application.service.EmployeeService;
-import com.restaurante.application.service.RestaurantService;
-import com.restaurante.domain.Employee;
-import com.restaurante.domain.Restaurant;
-import com.restaurante.infrastructure.dto.EmployeeDto;
+import com.restaurante.application.service.ProductService;
+import com.restaurante.domain.Product;
+import com.restaurante.infrastructure.dto.ProductDto;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/employee")
+@RequestMapping("/product")
 @Slf4j
-public class EmployeeController {
+public class ProductController {
 
-	private final EmployeeService employeeService;
+	private final ProductService productService;
 
-	private final RestaurantService restaurantService;
-
-	public EmployeeController(EmployeeService employeeService, RestaurantService restaurantService) {
-		this.employeeService = employeeService;
-		this.restaurantService = restaurantService;
+	public ProductController(ProductService productService) {
+		this.productService = productService;
 	}
 
 	@PostMapping
-	public ResponseEntity<?> registerRestaurant(@Valid @RequestBody EmployeeDto employeeDto,
-			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+	public ResponseEntity<?> registerProduct(@Valid @RequestBody ProductDto productDto, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
 		Map<String, Object> response = new HashMap<>();
 		response.put("exito", false);
 		HttpStatus status = HttpStatus.CREATED;
@@ -58,13 +52,11 @@ public class EmployeeController {
 			return new ResponseEntity<Map<String, Object>>(response, status);
 		}
 		try {
-			Restaurant restaurant = restaurantService.buscarById(Integer.parseInt(employeeDto.getIdRestaurant()));
-			if (restaurant != null) {
-				Employee employee = employeeService.crearEmployee(employeeDto.employeeDtoToEmployee());
-				if (employee != null) {
-					restaurant.getLstEmployees().add(employee);
-					restaurantService.crearRestaurant(restaurant);
-				}
+			Product product = productService.crearProduct(productDto.productDtoToProduct());
+			crearProductos();
+			if (product != null) {
+				response.put("mensaje", "Producto creado correctamente");
+				response.put("exito", true);
 			} else {
 				status = HttpStatus.BAD_REQUEST;
 				response.put("mensaje", "El ID del restaurante no Existe!");
@@ -78,21 +70,23 @@ public class EmployeeController {
 			return new ResponseEntity<Map<String, Object>>(response, status);
 		}
 
-		response.put("mensaje", "Empleado creado correctamente");
-		response.put("exito", true);
 		return new ResponseEntity<Map<String, Object>>(response, status);
 	}
 
-	@GetMapping(value = "/consultar/{id}")
-	public ResponseEntity<?> findAll(@PathVariable Integer id, HttpSession httpSession) {
+	@GetMapping
+	public ResponseEntity<?> findAll(HttpSession httpSession) {
 		Map<String, Object> response = new HashMap<>();
 		response.put("exito", false);
 		HttpStatus status = HttpStatus.OK;
 		try {
-			Restaurant restaurant = restaurantService.buscarById(id);
-			if (restaurant != null && restaurant.getLstEmployees().size() > 0) {
+			Iterable<Product> iteProduct = productService.buscarAll();
+			if (iteProduct != null) {
+				List<Product> lstProducts = new ArrayList<Product>();
+				iteProduct.forEach(product -> {
+					lstProducts.add(product);
+				});
 				response.put("mensaje", "OK");
-				response.put("employees", restaurant.getLstEmployees());
+				response.put("products", lstProducts);
 				response.put("exito", true);
 			} else {
 				response.put("mensaje", "No existen registros");
@@ -107,6 +101,21 @@ public class EmployeeController {
 		}
 
 		return new ResponseEntity<Map<String, Object>>(response, status);
+	}
+
+	private void crearProductos() {
+		for (int i = 0; i < 10; i++) {
+			int dato = getRandom(1, 20);
+			ProductDto productDto = new ProductDto("Carne " + dato, "Descripcion " + dato,
+					String.valueOf(Math.round(getRandom(5000, 50000) / 1000.0) * 1000.0));
+			productService.crearProduct(productDto.productDtoToProduct());
+		}
+	}
+
+	public static int getRandom(int min, int max) {
+		int range = (max - min) + 1;
+		int random = (int) ((range * Math.random()) + min);
+		return random;
 	}
 
 }
