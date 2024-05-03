@@ -2,6 +2,7 @@ package com.restaurante.application.service;
 
 import com.restaurante.application.repository.ProductRepository;
 import com.restaurante.domain.Product;
+import com.restaurante.domain.Restaurant;
 
 public class ProductService {
 
@@ -21,6 +22,10 @@ public class ProductService {
 
 	public Product getProductById(Integer id) {
 		return productRepository.getProductById(id);
+	}
+
+	public Iterable<Product> buscarByRestaurant(Restaurant restaurant) {
+		return productRepository.buscarByRestaurant(restaurant);
 	}
 
 }

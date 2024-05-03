@@ -26,7 +26,7 @@ public interface ProductMapper {
 
     Product toProduct(ProductEntity productEntity);
 
-    Iterable<Product> toProduct(Iterable<ProductEntity> productEntities);
+    Iterable<Product> toProducts(Iterable<ProductEntity> productEntities);
 
     @InheritInverseConfiguration
     ProductEntity toProductEntity(Product product);

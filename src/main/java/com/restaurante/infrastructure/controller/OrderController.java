@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,8 @@ import com.restaurante.application.service.ProductService;
 import com.restaurante.domain.Order;
 import com.restaurante.domain.OrderProduct;
 import com.restaurante.domain.Product;
+import com.restaurante.domain.Reporte;
+import com.restaurante.domain.Restaurant;
 import com.restaurante.infrastructure.dto.OrderBillDTO;
 import com.restaurante.infrastructure.dto.OrderDto;
 import com.restaurante.infrastructure.dto.OrderProductBillDTO;
@@ -96,6 +100,60 @@ public class OrderController {
 				response.put("exito", true);
 			} else {
 				response.put("mensaje", "Orden NO creada");
+			}
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			response.put("mensaje", "Error al realizar la consulta en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, status);
+		}
+
+		return new ResponseEntity<Map<String, Object>>(response, status);
+	}
+
+	@GetMapping(value = "/consultar-restaurant/{id}")
+	public ResponseEntity<?> findAllRestaurant(@PathVariable Integer id) {
+		Map<String, Object> response = new HashMap<>();
+		response.put("exito", false);
+		HttpStatus status = HttpStatus.OK;
+		try {
+			Restaurant restaurant = new Restaurant();
+			restaurant.setId(id);
+			Iterable<Product> lstProducts = productService.buscarByRestaurant(restaurant);
+			if (lstProducts != null) {
+				response.put("mensaje", "OK");
+				response.put("ventas_by_restaurante", lstProducts);
+				response.put("exito", true);
+			} else {
+				response.put("mensaje", "No existen registros");
+				response.put("employees", null);
+				response.put("exito", false);
+			}
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			response.put("mensaje", "Error al realizar la consulta en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, status);
+		}
+
+		return new ResponseEntity<Map<String, Object>>(response, status);
+	}
+
+	@GetMapping(value = "/consultar")
+	public ResponseEntity<?> findAll() {
+		Map<String, Object> response = new HashMap<>();
+		response.put("exito", false);
+		HttpStatus status = HttpStatus.OK;
+		try {
+			List<Reporte> lstReporte = orderProductService.buscarReporte();
+			if (lstReporte != null) {
+				response.put("mensaje", "OK");
+				response.put("ventas", lstReporte);
+				response.put("exito", true);
+			} else {
+				response.put("mensaje", "No existen registros");
+				response.put("employees", null);
+				response.put("exito", false);
 			}
 		} catch (Exception e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
