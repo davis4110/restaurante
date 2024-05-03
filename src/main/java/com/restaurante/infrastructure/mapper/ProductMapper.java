@@ -8,7 +8,7 @@ import org.mapstruct.Mappings;
 import com.restaurante.domain.Product;
 import com.restaurante.infrastructure.entity.ProductEntity;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {RestaurantMapper.class})
 public interface ProductMapper {
 
     @Mappings(
@@ -19,7 +19,8 @@ public interface ProductMapper {
                     @Mapping(source = "description", target = "description"),
                     @Mapping(source = "price", target = "price"),
                     @Mapping(source = "dateCreated", target = "dateCreated"),
-                    @Mapping(source = "dateUpdated", target = "dateUpdated")
+                    @Mapping(source = "dateUpdated", target = "dateUpdated"),
+                    @Mapping(source = "restaurantEntity", target = "restaurant")
             }
     )
 

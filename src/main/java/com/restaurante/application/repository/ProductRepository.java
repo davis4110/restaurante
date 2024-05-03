@@ -7,4 +7,7 @@ public interface ProductRepository {
 	public Product crearProduct(Product product);
 
 	public Iterable<Product> buscarAll();
+	
+	Product getProductById(Integer id);
+
 }

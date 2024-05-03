@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.restaurante.application.service.ProductService;
+import com.restaurante.application.service.RestaurantService;
 import com.restaurante.domain.Product;
+import com.restaurante.domain.Restaurant;
 import com.restaurante.infrastructure.dto.ProductDto;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,8 +31,11 @@ public class ProductController {
 
 	private final ProductService productService;
 
-	public ProductController(ProductService productService) {
+	private final RestaurantService restaurantService;
+
+	public ProductController(ProductService productService, RestaurantService restaurantService) {
 		this.productService = productService;
+		this.restaurantService = restaurantService;
 	}
 
 	@PostMapping
@@ -52,11 +56,15 @@ public class ProductController {
 			return new ResponseEntity<Map<String, Object>>(response, status);
 		}
 		try {
-			Product product = productService.crearProduct(productDto.productDtoToProduct());
-			crearProductos();
-			if (product != null) {
-				response.put("mensaje", "Producto creado correctamente");
-				response.put("exito", true);
+			Restaurant restaurant = restaurantService.buscarById(Integer.parseInt(productDto.getIdRestaurant()));
+			if (restaurant != null) {
+				productDto.setRestaurant(restaurant);
+				Product product = productService.crearProduct(productDto.productDtoToProduct());
+				crearProductos(restaurant);
+				if (product != null) {
+					response.put("mensaje", "Producto creado correctamente");
+					response.put("exito", true);
+				}
 			} else {
 				status = HttpStatus.BAD_REQUEST;
 				response.put("mensaje", "El ID del restaurante no Existe!");
@@ -74,7 +82,7 @@ public class ProductController {
 	}
 
 	@GetMapping
-	public ResponseEntity<?> findAll(HttpSession httpSession) {
+	public ResponseEntity<?> findAll() {
 		Map<String, Object> response = new HashMap<>();
 		response.put("exito", false);
 		HttpStatus status = HttpStatus.OK;
@@ -103,11 +111,12 @@ public class ProductController {
 		return new ResponseEntity<Map<String, Object>>(response, status);
 	}
 
-	private void crearProductos() {
+	private void crearProductos(Restaurant restaurant) {
 		for (int i = 0; i < 10; i++) {
 			int dato = getRandom(1, 20);
 			ProductDto productDto = new ProductDto("Carne " + dato, "Descripcion " + dato,
-					String.valueOf(Math.round(getRandom(5000, 50000) / 1000.0) * 1000.0));
+					String.valueOf(Math.round(getRandom(5000, 50000) / 1000.0) * 1000.0), restaurant.getId().toString(),
+					restaurant);
 			productService.crearProduct(productDto.productDtoToProduct());
 		}
 	}

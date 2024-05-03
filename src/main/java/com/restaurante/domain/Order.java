@@ -10,15 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Order {
 
 	private Integer id;
-	private String code;
-	private String name;
-	private String description;
-	private BigDecimal price;
 	private LocalDateTime dateCreated;
-	private LocalDateTime dateUpdated;
+	private BigDecimal totalBill;
 
-	private Restaurant restaurant;
 }

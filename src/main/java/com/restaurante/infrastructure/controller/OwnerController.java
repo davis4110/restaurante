@@ -22,7 +22,6 @@ import com.restaurante.domain.Owner;
 import com.restaurante.domain.Restaurant;
 import com.restaurante.infrastructure.dto.OwnerDto;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -83,7 +82,7 @@ public class OwnerController {
 	}
 
 	@GetMapping(value = "/consultar/{id}")
-	public ResponseEntity<?> findAll(@PathVariable Integer id, HttpSession httpSession) {
+	public ResponseEntity<?> findAll(@PathVariable Integer id) {
 		Map<String, Object> response = new HashMap<>();
 		response.put("exito", false);
 		HttpStatus status = HttpStatus.OK;

@@ -18,4 +18,9 @@ public class ProductService {
 	public Iterable<Product> buscarAll() {
 		return productRepository.buscarAll();
 	}
+
+	public Product getProductById(Integer id) {
+		return productRepository.getProductById(id);
+	}
+
 }

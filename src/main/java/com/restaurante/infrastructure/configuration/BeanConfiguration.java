@@ -4,10 +4,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.restaurante.application.repository.EmployeeRepository;
+import com.restaurante.application.repository.OrderProductRepository;
+import com.restaurante.application.repository.OrderRepository;
 import com.restaurante.application.repository.OwnerRepository;
 import com.restaurante.application.repository.ProductRepository;
 import com.restaurante.application.repository.RestaurantRepository;
 import com.restaurante.application.service.EmployeeService;
+import com.restaurante.application.service.OrderProductService;
+import com.restaurante.application.service.OrderService;
 import com.restaurante.application.service.OwnerService;
 import com.restaurante.application.service.ProductService;
 import com.restaurante.application.service.RestaurantService;
@@ -33,5 +37,15 @@ public class BeanConfiguration {
 	@Bean
 	public ProductService productService(ProductRepository productRepository) {
 		return new ProductService(productRepository);
+	}
+
+	@Bean
+	public OrderService orderService(OrderRepository orderRepository) {
+		return new OrderService(orderRepository);
+	}
+
+	@Bean
+	public OrderProductService orderProductService(OrderProductRepository orderProductRepository) {
+		return new OrderProductService(orderProductRepository);
 	}
 }

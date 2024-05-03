@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.restaurante.domain.Product;
+import com.restaurante.domain.Restaurant;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,11 @@ public class ProductDto implements Serializable {
 
 	@NotBlank(message = "Precio es requerido")
 	private String price;
+	
+	@NotBlank(message = "El ID del restaurante es requerido")
+	private String idRestaurant;
+	
+	private Restaurant restaurant;
 
 	public Product productDtoToProduct() {
 		return new Product(
@@ -34,7 +40,8 @@ public class ProductDto implements Serializable {
 				this.getDescription(), 
 				new BigDecimal(this.getPrice()), 
 				LocalDateTime.now(),
-				null
+				null,
+				this.restaurant
 				);
 	}
 
